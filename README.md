@@ -1,4 +1,5 @@
-# wake-word-detection
+# Wake-word-detection
+
 A real-time system that detects wake words using a neural network model on 2-second audio spectrograms.
 
 
@@ -15,3 +16,22 @@ This project implements a real-time wake word detection system with the followin
 
 ---
 
+The Wake word for this is "Hey Kocho" which is taken from name of character Shinobu Kocho from popular manga "Demon Slayers". 
+
+
+
+### Usage
+
+To use it you need to first obtrain a model:
+1. You can download pretrained model (man voice only)
+2. You can download pretrained model and finetune it to your own dataset
+3. Use your pretrained model
+Note: If you are going to use your own pretrained model, manage input shapes and make sure the output is result of binary classification.
+
+Second step is to configure the python file "Application.py" and run it. Voila!
+
+
+
+### Additional Information:
+
+Files for data gathering and preprocessing are provided as well for the purpose of understanding what kind of preprocessing the audios went through. 
