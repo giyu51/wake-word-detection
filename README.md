@@ -16,6 +16,25 @@ The wake word detection system follows a streamlined workflow:
 
 ---
 
+## :link: Dependencies
+
+To run this project, you need to have the following dependencies installed:
+
+- 🐍 [Python](https://www.python.org/downloads/): Python is a programming language used by this project.
+- 📦 [pip](https://pip.pypa.io/en/stable/): A package manager for installing Python libraries and packages.
+- 🧠 [TensorFlow](https://www.tensorflow.org/): An open-source machine learning framework used for building and training the model.
+- 🔢 [NumPy](https://numpy.org/): A library for numerical computing in Python, used for handling arrays and data.
+- 📈 [Matplotlib](https://matplotlib.org/): A plotting library for creating visualizations from data.
+- 🎵 [Librosa](https://librosa.org/): A Python package for music and audio analysis, used for audio processing tasks.
+- 🔊 [Soundfile](https://pysoundfile.readthedocs.io/en/latest/): A Python library for reading and writing sound files.
+- 🎮 [Pygame](https://www.pygame.org/): A set of Python modules designed for writing video games.
+- 🎤 [PyAudio](https://people.csail.mit.edu/hubert/pyaudio/): Python bindings for PortAudio, used for audio input and output.
+- 🖼️ [Matplotlib](https://matplotlib.org/): A plotting library for creating visualizations from data.
+
+These libraries provide the necessary tools for building, training, and evaluating the model, as well as handling audio input and output, and visualizing the results.
+
+--- 
+
 ## Usage Instructions 📝
 
 To utilize the system, follow these steps:
