@@ -29,7 +29,7 @@ To run this project, you need to have the following dependencies installed:
 - 🔊 [Soundfile](https://pysoundfile.readthedocs.io/en/latest/): A Python library for reading and writing sound files.
 - 🎮 [Pygame](https://www.pygame.org/): A set of Python modules designed for writing video games.
 - 🎤 [PyAudio](https://people.csail.mit.edu/hubert/pyaudio/): Python bindings for PortAudio, used for audio input and output.
-- 🖼️ [Matplotlib](https://matplotlib.org/): A plotting library for creating visualizations from data.
+
 
 These libraries provide the necessary tools for building, training, and evaluating the model, as well as handling audio input and output, and visualizing the results.
 
