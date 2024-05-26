@@ -1,3 +1,4 @@
+
 import pyaudio
 import numpy as np
 from collections import deque
@@ -9,13 +10,16 @@ import pygame
 import os
 from typing import Any
 
+response_mapping = {
+    "wake_response_audio":"kocho_sounds/moshi_moshi.wav", "wake_response_message":"Moshi moshi", "greeting_message":"Konnichiwa", "greeting_audio":"kocho_sounds/konnichiwa.wav", "goodbye_audio":"kocho_sounds/sayonara.wav", "goodbye_message":"Sayonaraa..."
+}
+
 class AudioProcessor:
     def __init__(
         self,
         sample_shape: tuple | None = None,
         model_path: str = "model.keras",
-        wake_response_audio: str = "beep.wav",
-        wake_response_message: str = "Moshi moshi",
+        response_mapping: dict = {},
         use_model_warm_up=True,
         batch_size=32,
         rate=44100,
@@ -40,6 +44,7 @@ class AudioProcessor:
 
         # Saving related variables
         self.save_dir: str = save_dir
+        os.makedirs(self.save_dir, exist_ok=True)
         self._saving_counter: int = len(os.listdir(self.save_dir))
         self.verbose = verbose
 
@@ -54,18 +59,60 @@ class AudioProcessor:
         # thus mathing the batch size
 
         self.model_path: str = model_path
-        self._model = self.load_model()
+        self.model = self.load_model()
 
         # Play beep sound everytime the model recognized a wake word
-        self.wake_response_audio: str = wake_response_audio
-        self.wake_response_message: str = wake_response_message
+
         self.mixer = pygame.mixer
         self.mixer.init()
-        self.wake_response_sound = self.mixer.Sound(self.wake_response_audio)
         self.wake_response_channel = self.mixer.Channel(0)
+        self.response_mapping = response_mapping
+        self._load_responses()
 
         if use_model_warm_up:
             self.warm_up_model()
+
+    def _load_responses(self):
+
+        ### Wake Response
+
+        self.wake_response_audio: str = self.response_mapping.get(
+            "wake_response_audio", None
+        )
+        self.wake_response_message: str = self.response_mapping.get(
+            "wake_response_message", None
+        )
+        self.wake_response_sound = self._get_sound_obj(self.wake_response_audio)
+
+        ### Greetings
+
+        self.greeting_audio: str = self.response_mapping.get("greeting_audio", None)
+        self.greeting_message: str = self.response_mapping.get("greeting_message", None)
+        self.greeting_sound = self._get_sound_obj(self.greeting_audio)
+
+        ### Goodbye
+
+        self.goodbye_audio: str = self.response_mapping.get("goodbye_audio", None)
+        self.goodbye_message: str = self.response_mapping.get("goodbye_message", None)
+        self.goodbye_sound = self._get_sound_obj(self.goodbye_audio)
+
+    def _get_sound_obj(self, audio_name):
+        return self.mixer.Sound(audio_name) if audio_name is not None else None
+
+    def send_voice(self, sound, message=None):
+        if sound is None:
+            return
+        self.wake_response_channel.play(sound)  # Play the beep sound on the channel
+
+        isFinished = False
+        while self.wake_response_channel.get_busy():
+            if not isFinished and message is not None:
+                print(self.send_message(message))
+                isFinished = True
+
+    def send_message(self, message):
+        if message is not None:
+            return message
 
     def load_model(self):
         return tf.keras.models.load_model(self.model_path)
@@ -81,7 +128,7 @@ class AudioProcessor:
             shape=(self.batch_size,) + self.sample_shape
         )  # Replace with appropriate shape
         for _ in range(warm_up_cycles):
-            self._model.predict(dummy_input, verbose=0)
+            self.model.predict(dummy_input, verbose=0)
 
         self.log("Model warm-up completed.")
 
@@ -108,7 +155,7 @@ class AudioProcessor:
         sequence = np.concatenate(segments)
         spectrogram = self._spectrogram_from_audio_data(sequence)
         data_batch = np.vstack((self.batch_placeholder, spectrogram[np.newaxis, :, :]))
-        prediction = self._model.predict(data_batch, verbose=0)
+        prediction = self.model.predict(data_batch, verbose=0)
         prediction = prediction[-1][0]
         prediction = np.round(prediction, 2)
         return prediction
@@ -120,21 +167,12 @@ class AudioProcessor:
 
         prediction = self._predict(self.audio_buffer)
         if prediction > 0.8:
-
-            self.wake_response_channel.play(
-                self.wake_response_sound
-            )  # Play the beep sound on the channel
-
-            isFinished = False
-            while (
-                self.wake_response_channel.get_busy()
-            ):  # Wait until sound playback is complete
-                if not isFinished:
-                    self.log(self.wake_response_message)
-                    self._save_segments_to_wav(
-                        self.audio_buffer
-                    )  # Uncomment if you want to save the segments
-                    isFinished = True
+            self.send_voice(
+                sound=self.wake_response_sound, message=self.wake_response_message
+            )
+            self._save_segments_to_wav(
+                self.audio_buffer
+            )  # Uncomment if you want to save recognized wake word segments
 
         else:
             escalated_time = time.perf_counter() - start_time
@@ -142,7 +180,7 @@ class AudioProcessor:
                 f"LISTENING... | Prediction: {prediction} | Time Escalated: {escalated_time:.2f}\n"
             )
             if escalated_time > self.DURATION:
-                print(
+                self.log(
                     f"WARNING: callback function took {escalated_time:.2f} seconds, which is longer than the chunk duration of 1 second.\n"
                 )
         return (in_data, pyaudio.paContinue)
@@ -158,24 +196,26 @@ class AudioProcessor:
             stream_callback=self.callback,
         )
 
-        print("Recording...")
+        self.log("Recording...")
         stream.start_stream()
 
+        self.send_voice(sound=self.greeting_sound, message=self.greeting_message)
         try:
             while stream.is_active():
                 time.sleep(1)
         except KeyboardInterrupt:
-            print("Interrupted by user")
+            self.send_voice(self.goodbye_sound, message=self.goodbye_message)
+            self.log("Interrupted by user")
 
         stream.stop_stream()
         stream.close()
         p.terminate()
-        print("Recording stopped.")
+        self.log("Recording stopped.")
 
 
 if __name__ == "__main__":
     audio_processor = AudioProcessor(
-        model_path="best_model.h5",
+        model_path="best_model.h5", response_mapping=response_mapping
     )
     audio_processor.start_stream()
 
