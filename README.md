@@ -23,7 +23,7 @@ This project is part of larger projects like a Home Voice Assistant.
 
 ## Project Overview 🚀
 
-The core model for wake word detection is trained on the author's voice and performs well. The wake word is "Hey Kocho," a reference to Shinobu Kocho from the anime-manga series Demon Slayer.
+The core model for wake word detection is trained on the author's voice and performs well. The wake word is "Hey Kocho," a reference to [Shinobu Kocho](https://kimetsu-no-yaiba.fandom.com/wiki/Shinobu_Kocho) from the anime-manga series Demon Slayer.
 
 The system follows a streamlined workflow:
 
