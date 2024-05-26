@@ -71,9 +71,49 @@ To utilize the system, follow these steps:
 
 ---
 
-## Model Training
+## Files 📂
 
-#### Model Architecture:
+1. **DataGathering.py** 🎙️: Used to gather data by recording the wake word or continuously recording background sounds.
+2. **Preprocessing.ipynb** 🔄: Used for preprocessing audio, applying different audio augmentation techniques, and moving the augmented audios to a separate folder.
+3. **KerasGenerator.py** ⚙️: A custom module for Keras generator creation.
+4. **Training.ipynb** 🏋️: Used to assemble the dataset, train the model, and save it.
+5. **Application.py** 🚀: The actual application integrating the trained model.
+
+## Dataset Info 📊
+
+The dataset consists of 2-second audio spectrograms.
+
+In the current dataset, we used:
+
+1. **"Wake word" class (1)**:
+
+   - Recording of the author saying the wake word.
+
+2. **"Background" class (0)**:
+   - **Background**: Recordings of the author's background.
+   - **Talk**: Recording of the author speaking and talking about everything except the wake word.
+   - **Urban**: [UrbanSound8K](https://www.kaggle.com/datasets/chrisfilo/urbansound8k?resource=download&select=fold5) Dataset from Kaggle.
+
+The dataset was split as follows:
+
+- Wake samples = 50%
+- Background samples = 50%
+
+In background samples:
+
+- Urban samples (2 seconds) = 15,082
+- Background samples = (Number of wake samples - Number of urban samples) / 2
+- Talk samples = Background samples
+
+Note ⚠️: In the UrbanSound8K dataset, there were audio files of different durations, like 2 or 5 seconds. Therefore, we implemented a preprocessing function to extract each 2-second segment from all files.
+
+### Model Architecture 🏗️
+
+This section covers the code used for model building. The general structure involves acquiring features from spectrograms and feeding those features to RNN layers to learn the sequence and how to distinguish them.
+
+In the CNN part, we start with simple CNN layers followed by normalization, activation, and pooling layers. Subsequently, we use Residual blocks, which proved to work even better than traditional convolutional layers due to the "skip connection."
+
+💡 Additionally, you can check the ["Model Architecture Flowchart"](#model-architecture-flowchart)
 
 ```py
 def residual_block(x, filters:int, kernel_size:int|Tuple[int]=3, strides:int|Tuple[int]=1, activation:str="relu",padding:str="same" ):
@@ -130,11 +170,9 @@ def build_model(input_shape, batch_size=32):
     return model
 ```
 
-💡Additionally, you can check ["Model Architecture Flowchart"](#model-architecture-flowchart)
-
 ---
 
-#### Training:
+## Training:
 
 Parameters:
 
@@ -158,9 +196,9 @@ Parameters:
 >
 > > **Train-test split**: 20%
 >
-> > **X-train samples** : 359040
+> > **X-train samples** : 359,040
 >
-> > **X-test samples** : 89760
+> > **X-test samples** : 89,760
 >
 > > **Starting LR** (Learning Rate): 1e-3 (0.001)
 
@@ -196,7 +234,27 @@ Parameters:
 
 ![Accuracy]("images/accuracy.png")
 
-#### Model Architecture Flowchart
+## Application 🎛️
+
+The application is a class that handles all functions accordingly:
+
+1. **Buffer Creation**: Creates a buffer using `deque` with a length of 2 to store two 1-second sequences.
+2. **Stream Opening**: Opens a stream where each chunk is 1 second in duration, matching the model's training shape. For example, if the model was trained on spectrograms from audio with shape (88200,), each chunk should be (44100,) since the model was trained on 2-second audios.
+3. **Chunk Recording**: Records a chunk and pushes it to the buffer.
+4. **Callback Execution**: Sends the buffer to the model for prediction.
+5. **Prediction Handling**: Manages the predictions from the model.
+
+### Additional Details 📝
+
+1. **Sound Playback**: The application can play sounds based on different conditions using a `response_mapping` dictionary passed during object creation. For more information, refer to the code.
+2. **Initial Buffer State Handling**: Ensures the buffer works for 2 seconds initially to get 2 samples. This is achieved by creating an empty sequence at the initialization state so that the buffer size is always 2 during processing. This eliminates the need for the condition `if len(buffer) == DURATION`, which slows down the callback.
+3. **Callback Warning**: Indicates a warning if the processing time exceeds the duration of a chunk, which can slow down the entire process.
+
+## Additional Information 📄
+
+Included are files for data gathering and preprocessing to provide insight into the applied audio preprocessing techniques.
+
+## Model Architecture Flowchart
 
 ```
     +---------------------+
@@ -305,7 +363,3 @@ Parameters:
     +---------------------+
 
 ```
-
-### Additional Information 📄
-
-Included are files for data gathering and preprocessing to provide insight into the applied audio preprocessing techniques.
