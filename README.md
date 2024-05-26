@@ -39,7 +39,7 @@ The README.md will focus mainly on the last two parts - Model Training and Real-
 
 ## :link: Dependencies
 
-The link to the PreTrained Model (on voice of the author): https://drive.google.com/file/d/1Q_2NUY1HP67XyWa50pP_0NaSwIm4M2O9/view?usp=sharing
+The link to the **PreTrained Model** (on voice of the author): https://drive.google.com/file/d/1Q_2NUY1HP67XyWa50pP_0NaSwIm4M2O9/view?usp=sharing
 
 To run this project, you need to have the following dependencies installed:
 
