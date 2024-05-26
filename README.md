@@ -4,7 +4,7 @@ This project introduces a real-time system that detects wake words using a neura
 
 ---
 
-<div style="background-color: darkblue; color:white; padding: 15px 10px; border-radius: 5px; border:2px solid white">
+<p style="background-color: darkblue; color:white; padding: 15px 10px; border-radius: 5px; border:2px solid white">
 
 # Portfolio Project 📁
 
@@ -19,7 +19,7 @@ This project showcases:
 
 This project is part of larger projects like a Home Voice Assistant.
 
-</div>
+</p>
 
 ## Project Overview 🚀
 
