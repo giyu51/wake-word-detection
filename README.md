@@ -235,18 +235,6 @@ Parameters:
 >> **Accuracy**: 1.0
 >>
 
-#### Graphs:
-
-**Loss over epochs**
-
-![Loss]()
-
-<br>
-
-**Accuracy over epochs**
-
-![Accuracy]()
-
 ## Application 🎛️
 
 The application is a class that handles all functions accordingly:
