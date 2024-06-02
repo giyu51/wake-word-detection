@@ -55,7 +55,9 @@ Wake word detection is a crucial component in many voice-activated systems, enab
 
 The wake word "Hey Kocho" is inspired by Shinobu Kocho from the anime-manga series Demon Slayer (Kimetsu no Yaiba). 🦋
 
-<img src="Shinobu_Kocho.png" style="width: 20%;">
+<div style="display: flex; justify-content: center;">
+    <img src="ShinobuKocho.png" style="width: 40%;">
+</div>
 
 
 ## Dataset 📊
