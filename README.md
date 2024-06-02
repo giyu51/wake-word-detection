@@ -58,7 +58,8 @@ The wake word "Hey Kocho" is inspired by Shinobu Kocho from the anime-manga seri
 <table>
   <tr>
     <td align="center">
-      <img src="ShinobuKocho.png" style="width: 30%;">
+      <img src="ShinobuKocho.png" style="width: 30%;"><br>
+      <strong>Shinobu Kocho</strong>
     </td>
   </tr>
 </table>
