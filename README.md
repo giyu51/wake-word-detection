@@ -73,7 +73,7 @@ The wake word "Hey Kocho" is inspired by Shinobu Kocho from the anime-manga seri
 <table>
   <tr>
     <td align="center">
-      <img src="ShinobuKocho.png" alt="Shinobu Kocho" style="width: 30%;">
+      <img src="images/ShinobuKocho.png" alt="Shinobu Kocho" style="width: 30%;">
       <br>
       <strong>Shinobu Kocho</strong>
     </td>
@@ -440,7 +440,7 @@ The metrics indicate perfect performance in detecting both the background noise 
 
 The confusion matrix further visualizes the model's performance by showing the true positive, true negative, false positive, and false negative predictions.
 
-<img src="confusion_matrix.png">
+<img src="images/confusion_matrix.png">
 
 The confusion matrix reinforces the classification report's findings, with no misclassifications observed, highlighting the model's precision and recall in both classes.
 
