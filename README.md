@@ -521,7 +521,7 @@ Refer to [`Usage` section](#usage)
    - Loading Model (at each prediction)
    - Model without warm-up batch will be slow at first predictions
 
-   For optimized performance and project integration, it's recommended to use `Application.py`. This system is optimized for continuous recording and prediction, making it much faster and suitable for project integration. Feel free to modify the file as needed; the code is straightforward.
+   For optimized performance and project integration, it's recommended to use `WakeWord.py`. This system is optimized for continuous recording and prediction, making it much faster and suitable for project integration. Feel free to modify the file as needed; the code is straightforward.
 
 2. Still, if the purpose is solely one-time use or testing, here is an example of `main.py` utilization through the command line:
    - Using Audio file (`--audio` - loads .wav format only):
