@@ -46,6 +46,7 @@ This project is a highly precise wake word detection system capable of distingui
     - [Detailed Model Structure:](#detailed-model-structure)
     - [Key Features :](#key-features-)
     - [Model Summary](#model-summary)
+      - [🏛️ Architecture Summary](#️-architecture-summary)
   - [Training Process 🏋️‍♂️](#training-process-️️)
     - [Custom Data Generator](#custom-data-generator)
     - [Model Compilation](#model-compilation)
@@ -227,7 +228,7 @@ y_batch shape: (32,)
 
 Single Input shape:  (40, 173, 1)
 ```
-
+#### 🏛️ Architecture Summary
 <details>
   <summary>Model Summary</summary>
 
