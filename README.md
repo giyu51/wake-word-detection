@@ -35,34 +35,34 @@ This project is a highly precise wake word detection system capable of distingui
   - [Table of Contents](#table-of-contents)
   - [📚 Background](#-background)
   - [📊 Dataset](#-dataset)
-  - [Audio Preprocessing 🎛️](#audio-preprocessing-️)
-    - [Pitch Augmentation 🎵](#pitch-augmentation-)
-    - [Volume Augmentation 🔊](#volume-augmentation-)
-    - [Noise Augmentation 📢](#noise-augmentation-)
-    - [Spectrogram Generation 🎶](#spectrogram-generation-)
-  - [Model Architecture 🏗️](#model-architecture-️)
+  - [🎛️ Audio Preprocessing](#️-audio-preprocessing)
+    - [🎵 Pitch Augmentation](#-pitch-augmentation)
+    - [🔊 Volume Augmentation](#-volume-augmentation)
+    - [📢 Noise Augmentation](#-noise-augmentation)
+    - [🎶 Spectrogram Generation](#-spectrogram-generation)
+  - [🏗️ Model Architecture](#️-model-architecture)
     - [Key Layers and Components:](#key-layers-and-components)
     - [Model Description:](#model-description)
     - [Detailed Model Structure:](#detailed-model-structure)
     - [Key Features :](#key-features-)
     - [Model Summary](#model-summary)
       - [🏛️ Architecture Summary](#️-architecture-summary)
-  - [Training Process 🏋️‍♂️](#training-process-️️)
+  - [🏋️‍♂️ Training Process](#️️-training-process)
     - [Custom Data Generator](#custom-data-generator)
     - [Model Compilation](#model-compilation)
     - [Callbacks](#callbacks)
     - [Training Duration](#training-duration)
     - [Evaluation Metrics](#evaluation-metrics)
-  - [Results 📊](#results-)
+  - [📊 Results](#-results)
     - [Performance Metrics](#performance-metrics)
     - [Classification Report](#classification-report)
     - [Confusion Matrix](#confusion-matrix)
   - [⚠️ Important Note](#️-important-note)
   - [🔗 Dependencies](#-dependencies)
-  - [Usage](#usage)
-  - [Installation](#installation)
-  - [Contributing](#contributing)
-  - [License](#license)
+  - [💾 Installation](#-installation)
+  - [🛠️ Usage](#️-usage)
+  - [🫂 Contributing](#-contributing)
+  - [📜 License](#-license)
 
 ## 📚 Background
 
@@ -113,29 +113,29 @@ In background samples:
 
 **Important 🚧**: The model was trained only on the voice of the author. While the dataset includes various tones, moods, and acoustic conditions, it may not generalize well to other voices.
 
-## Audio Preprocessing 🎛️
+## 🎛️ Audio Preprocessing
 
 In this project, detailed audio preprocessing steps were implemented to ensure high-quality input data. The following techniques were utilized:
 
-### Pitch Augmentation 🎵
+### 🎵 Pitch Augmentation
 
 Pitch augmentation was performed on the audio data to introduce variations in pitch. This technique helps in making the model more robust to different pitch levels. Pitch augmentation involved shifting the pitch of the audio in semitones using the `librosa.effects.pitch_shift` function.
 
-### Volume Augmentation 🔊
+### 🔊 Volume Augmentation
 
 Volume augmentation was applied to the audio files to simulate variations in volume levels. This technique enhances the model's ability to generalize to different volume levels. Volume augmentation involved scaling the audio waveform by a factor using simple multiplication.
 
-### Noise Augmentation 📢
+### 📢 Noise Augmentation
 
 Noise augmentation was employed to introduce noise into the audio data, making the model more resilient to noisy environments. This technique adds random noise to the audio signal, simulating real-world scenarios. Gaussian white noise was generated and added to the audio waveform at various noise levels.
 
-### Spectrogram Generation 🎶
+### 🎶 Spectrogram Generation
 
 Spectrograms were generated from the audio data using Mel-frequency cepstral coefficients (MFCCs). Prior to spectrogram generation, a pre-emphasis filter was applied to the audio signal using the `librosa.effects.preemphasis` function. This filter boosts the higher frequencies, enhancing the signal-to-noise ratio and improving the overall quality of the spectrogram representation.
 
 The generated spectrograms provide a visual representation of the audio signal's frequency content over time, which is essential for training deep learning models on audio data. Additionally, the spectrograms were normalized to ensure consistent input data for the model.
 
-## Model Architecture 🏗️
+## 🏗️ Model Architecture
 
 The model architecture for this wake word detection project is designed to effectively capture and enhance features from audio data, leveraging a combination of convolutional and recurrent neural network layers. This architecture ensures robust performance by learning both spatial and temporal dependencies in the input audio.
 
@@ -228,7 +228,9 @@ y_batch shape: (32,)
 
 Single Input shape:  (40, 173, 1)
 ```
+
 #### 🏛️ Architecture Summary
+
 <details>
   <summary>Model Summary</summary>
 
@@ -352,7 +354,7 @@ dense_1 (Dense)                (32, 1)              129         ['dropout_4[0][0
 
 </details>
 
-## Training Process 🏋️‍♂️
+## 🏋️‍♂️ Training Process
 
 The training process of the model was designed to maximize performance while handling a large dataset and extended training duration. Below are the key aspects of the training setup:
 
@@ -407,7 +409,7 @@ reduce_lr_callback = callbacks.ReduceLROnPlateau(
 
 - **Metrics Used**: During training, the primary metric monitored was accuracy.
 
-## Results 📊
+## 📊 Results
 
 The trained wake word detection model achieved outstanding results across various evaluation metrics, demonstrating its high accuracy and reliability in distinguishing between the wake word "Hey Kocho" and other sounds.
 
@@ -448,43 +450,94 @@ The model is trained only on the voice of the author. It may not perform optimal
 
 ## 🔗 Dependencies
 
-The link to the **PreTrained Model** (on voice of the author): https://drive.google.com/file/d/1Q_2NUY1HP67XyWa50pP_0NaSwIm4M2O9/view?usp=sharing
+The link to the **PreTrained Model** (on voice of the author): [PreTrained Model](https://drive.google.com/file/d/1Q_2NUY1HP67XyWa50pP_0NaSwIm4M2O9/view?usp=sharing)
 
 To run this project, you need to have the following dependencies installed:
 
-- 🐍 [Python](https://www.python.org/downloads/): Python is a programming language used by this project.
+- 🐍 [Python - 3.10.13](https://www.python.org/downloads/): Python is a programming language used by this project.
 - 📦 [pip](https://pip.pypa.io/en/stable/): A package manager for installing Python libraries and packages.
-- 🧠 [TensorFlow](https://www.tensorflow.org/): An open-source machine learning framework used for building and training the model.
-- 🔢 [NumPy](https://numpy.org/): A library for numerical computing in Python, used for handling arrays and data.
-- 🎵 [Librosa](https://librosa.org/): A Python package for music and audio analysis, used for audio processing tasks.
-- 🔊 [Soundfile](https://pysoundfile.readthedocs.io/en/latest/): A Python library for reading and writing sound files.
-- 🎮 [Pygame](https://www.pygame.org/): Used for playing sounds.
-- 🎤 [PyAudio](https://people.csail.mit.edu/hubert/pyaudio/): Python bindings for PortAudio, used for audio input and output.
+- 🧠 [TensorFlow = 2.10.1](https://www.tensorflow.org/): An open-source machine learning framework used for building and training the model.
+- 🔢 [NumPy - 1.25.2](https://numpy.org/): A library for numerical computing in Python, used for handling arrays and data.
+- 📈 [Matplotlib - 3.8.0](https://matplotlib.org/): A plotting library for creating visualizations from data.
+- 📊 [Seaborn - 0.13.1](https://seaborn.pydata.org/): A Python data visualization library based on Matplotlib, used for statistical graphics.
+- 🎵 [Librosa - 0.10.1](https://librosa.org/): A Python package for music and audio analysis, used for audio processing tasks.
+- 🔊 [Soundfile - 0.12.1](https://pysoundfile.readthedocs.io/en/latest/): A Python library for reading and writing sound files.
+- 🎮 [Pygame - 2.5.2](https://www.pygame.org/): Used for playing sounds.
+- 🎤 [PyAudio - 0.2.13](https://people.csail.mit.edu/hubert/pyaudio/): Python bindings for PortAudio, used for audio input and output.
 
-These libraries provide the necessary tools for building, training, and evaluating the model, as well as handling audio input and output
+These libraries provide the necessary tools for building, training, and evaluating the model, as well as handling audio input and output, and visualizing the results.
 
-## Usage
+Here's the refined and updated installation and usage section:
 
-1. **Clone the repository**:
+## 💾 Installation
+
+1. **Set up a virtual environment**:
+
+   It's recommended to create a virtual environment to manage dependencies for this project. You can do this using `venv` or `conda`.
+
+   Using `conda`:
+
    ```bash
-   git clone https://github.com/your-username/wake-word-detection.git
+     conda create -n my_env
+     conda activate my_env
+   ```
+
+   Using `pip`
+
+   ```bash
+     virtualvenv my_env
+
+     # On windows:
+     my_env/Scripts/activate
+
+     # On Linux:
+     source my_env/bin/activate
+   ```
+
+2. **Clone the repository**:
+
+   ```bash
+   git clone https://github.com/giyu_51/wake-word-detection
    cd wake-word-detection
    ```
-2. **Install dependencies**:
+
+3. **Install dependencies**:
+
+   Use pip to install the required Python packages listed in `requirements.txt`:
+
    ```bash
    pip install -r requirements.txt
    ```
-3. **Run the model**:
-   `bash
-python run_model.py --input your_audio_file.wav
-`
-   [Provide detailed usage instructions, including examples and explanations of input/output.]
 
-## Installation
+Refer to [`Usage` section](#usage)
 
-[Include any additional installation steps, such as setting up a virtual environment, downloading pretrained models, etc.]
+## 🛠️ Usage
 
-## Contributing
+📖 Which script to use? :
+
+1. You can use the script `main.py` which allows making predictions from audio files or directly using the voice recorder. However, this method is not recommended for project integration due to the following reasons:
+
+   - Importing Modules
+   - Loading Model (at each prediction)
+   - Model without warm-up batch will be slow at first predictions
+
+   For optimized performance and project integration, it's recommended to use `Application.py`. This system is optimized for continuous recording and prediction, making it much faster and suitable for project integration. Feel free to modify the file as needed; the code is straightforward.
+
+2. Still, if the purpose is solely one-time use or testing, here is an example of `main.py` utilization through the command line:
+   - Using Audio file (`--audio` - loads .wav format only):
+     ```bash
+     python main.py --audio my_file.wav
+     ```
+   - Using voice recorder (`--use_recorder` - by default is false):
+     ```bash
+     python main.py --use_recorder
+     ```
+   - Specifying the model path (`--model_path`) - by default, the model name is `model.keras`:
+     ```bash
+     python main.py --use_recorder --model_path "best_model.h5"
+     ```
+
+## 🫂 Contributing
 
 Contributions are welcome! Please follow these steps to contribute:
 
@@ -495,6 +548,6 @@ Contributions are welcome! Please follow these steps to contribute:
 5. Push to the branch (`git push origin feature-branch`).
 6. Open a pull request.
 
-## License
+## 📜 License
 
-[Specify the license under which the project is distributed, e.g., MIT License.]
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

@@ -2,16 +2,10 @@ import argparse
 import os
 import pyaudio
 import wave
-
+import time
 import numpy as np
 import tensorflow as tf
 import librosa
-
-import argparse
-import os
-import pyaudio
-import wave
-import time
 
 
 def spectrogramFromAudioData(
@@ -21,11 +15,22 @@ def spectrogramFromAudioData(
     pre_emphasis_coef: None | float = None,
     use_normalization: bool = True,
 ):
-    # Load the audio data
+    """
+    Generate a spectrogram from audio data.
+
+    Args:
+        audio_data (np.ndarray): Input audio data.
+        sr (int, optional): Sampling rate of the audio data. Defaults to 44100.
+        expand_last_dim (bool, optional): Whether to expand the last dimension. Defaults to False.
+        pre_emphasis_coef (None | float, optional): Pre-emphasis coefficient. Defaults to None.
+        use_normalization (bool, optional): Whether to normalize the spectrogram. Defaults to True.
+
+    Returns:
+        np.ndarray: Spectrogram of the audio data.
+    """
     if pre_emphasis_coef is not None:
         audio_data = librosa.effects.preemphasis(audio_data, coef=pre_emphasis_coef)
 
-    # Spectrogram generation using Mel-frequency cepstral coefficients (MFCCs)
     spectrogram = librosa.feature.mfcc(y=audio_data, sr=sr, n_mfcc=40)
 
     if use_normalization:
@@ -46,13 +51,24 @@ def spectrogramFromFile(
     pre_emphasis_coef: None | float = None,
     use_normalization: bool = True,
 ):
-    # Load the audio data
+    """
+    Generate a spectrogram from an audio file.
+
+    Args:
+        audio_filepath (str): Path to the audio file.
+        sr (int, optional): Sampling rate of the audio data. Defaults to 44100.
+        expand_last_dim (bool, optional): Whether to expand the last dimension. Defaults to False.
+        pre_emphasis_coef (None | float, optional): Pre-emphasis coefficient. Defaults to None.
+        use_normalization (bool, optional): Whether to normalize the spectrogram. Defaults to True.
+
+    Returns:
+        np.ndarray: Spectrogram of the audio data.
+    """
     audio, sr = librosa.load(audio_filepath, sr=sr)
 
     if pre_emphasis_coef is not None:
         audio = librosa.effects.preemphasis(audio, coef=pre_emphasis_coef)
 
-    # Spectrogram generation using Mel-frequency cepstral coefficients (MFCCs)
     spectrogram = librosa.feature.mfcc(y=audio, sr=sr, n_mfcc=40)
 
     if use_normalization:
@@ -67,7 +83,16 @@ def spectrogramFromFile(
 
 
 def _predict(sample_batch):
+    """
+    Perform prediction on a sample batch.
 
+    Args:
+        sample_batch (np.ndarray): Input sample batch.
+
+    Returns:
+        float: Predicted value.
+    """
+    print("Preciting...")
     prediction = model.predict(sample_batch, verbose=0)
     prediction = prediction[-1][0]
     prediction = np.round(prediction, 2)
@@ -76,15 +101,14 @@ def _predict(sample_batch):
 
 def process_audio(audio_file):
     """
-    Process the audio file using the specified model.
+    Process audio data and perform prediction.
 
     Args:
         audio_file (str): Path to the audio file.
-        model_path (str): Path to the model file.
-        batch_size (int): Batch size for processing (default: 32).
-        sample_shape (tuple): Shape of audio samples (default: (40, 173)).
+
+    Returns:
+        float: Predicted value.
     """
-    # Add processing code here
     audio_data = spectrogramFromFile(audio_file, pre_emphasis_coef=0.95)
     batch_placeholder: np.ndarray = np.zeros(
         shape=(args.batch_size - 1,) + sample_shape
@@ -95,37 +119,10 @@ def process_audio(audio_file):
     return _predict(data_batch)
 
 
-def record_audio(model_path, batch_size=32, sample_shape=(40, 173)):
-    """
-    Record audio using the microphone and process it using the specified model.
-
-    Args:
-        model_path (str): Path to the model file.
-        batch_size (int): Batch size for processing (default: 32).
-        sample_shape (tuple): Shape of audio samples (default: (40, 173)).
-    """
-    # Add recording and processing code here
-    pass
-
-
-def is_wav_file(filename):
-    """
-    Check if the given file is in WAV format.
-
-    Args:
-        filename (str): Path to the file.
-
-    Returns:
-        bool: True if the file is in WAV format, False otherwise.
-    """
-    return filename.lower().endswith(".wav")
-
-
 def record_audio():
     """
     Record audio using the microphone.
     """
-    # Record audio for 2 seconds
     duration = 2  # seconds
     sample_rate = 44100
     chunk = 1024
@@ -157,7 +154,6 @@ def record_audio():
         stream.close()
         audio.terminate()
 
-    # Save recorded audio to a WAV file
     output_file = "recorded_audio.wav"
     with wave.open(output_file, "wb") as wf:
         wf.setnchannels(1)
@@ -166,6 +162,20 @@ def record_audio():
         wf.writeframes(b"".join(frames))
 
     return output_file
+
+
+def is_wav_file(filename):
+    """
+    Check if the given file is in WAV format.
+
+    Args:
+        filename (str): Path to the file.
+
+    Returns:
+        bool: True if the file is in WAV format, False otherwise.
+    """
+
+    return filename.lower().endswith(".wav")
 
 
 # Parse command-line arguments
