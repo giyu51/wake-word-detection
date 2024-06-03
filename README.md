@@ -45,6 +45,7 @@ This project is a highly precise wake word detection system capable of distingui
     - [Model Description:](#model-description)
     - [Detailed Model Structure:](#detailed-model-structure)
     - [Key Features :](#key-features-)
+    - [Model Summary](#model-summary)
   - [Training Process 🏋️‍♂️](#training-process-️️)
     - [Custom Data Generator](#custom-data-generator)
     - [Model Compilation](#model-compilation)
@@ -210,6 +211,145 @@ def build_model(input_shape, batch_size=32):
 - **TimeDistributed Layer**: Apply layers to each time step individually, maintaining the temporal structure of the data.
 
 This model architecture effectively combines the strengths of CNNs for feature extraction and LSTMs for sequence learning, making it well-suited for the task of wake word detection.
+
+### Model Summary
+
+```text
+Total params: 20,422,657
+Trainable params: 20,418,753
+Non-trainable params: 3,904
+__________________________________________________________________________________________________
+```
+
+```text
+X_batch shape: (32, 40, 173, 1)
+y_batch shape: (32,)
+
+Single Input shape:  (40, 173, 1)
+```
+
+<details>
+  <summary>Model Summary</summary>
+
+```text
+Model: "model"
+__________________________________________________________________________________________________
+Layer (type)                   Output Shape         Param #     Connected to
+==================================================================================================
+input_1 (InputLayer)           [(32, 40, 173, 1)]   0           []
+
+conv2d (Conv2D)                (32, 40, 173, 32)    320         ['input_1[0][0]']
+
+batch_normalization (BatchNorm  (32, 40, 173, 32)   128         ['conv2d[0][0]']
+alization)
+
+activation (Activation)        (32, 40, 173, 32)    0           ['batch_normalization[0][0]']
+
+max_pooling2d (MaxPooling2D)   (32, 20, 86, 32)     0           ['activation[0][0]']
+
+conv2d_1 (Conv2D)              (32, 20, 86, 64)     18496       ['max_pooling2d[0][0]']
+
+batch_normalization_1 (BatchNo  (32, 20, 86, 64)    256         ['conv2d_1[0][0]']
+rmalization)
+
+activation_1 (Activation)      (32, 20, 86, 64)     0           ['batch_normalization_1[0][0]']
+
+conv2d_2 (Conv2D)              (32, 20, 86, 64)     36928       ['activation_1[0][0]']
+
+conv2d_3 (Conv2D)              (32, 20, 86, 64)     2112        ['max_pooling2d[0][0]']
+
+batch_normalization_2 (BatchNo  (32, 20, 86, 64)    256         ['conv2d_2[0][0]']
+rmalization)
+
+add (Add)                      (32, 20, 86, 64)     0           ['conv2d_3[0][0]',
+                                                                  'batch_normalization_2[0][0]']
+
+activation_2 (Activation)      (32, 20, 86, 64)     0           ['add[0][0]']
+
+conv2d_4 (Conv2D)              (32, 20, 86, 128)    73856       ['activation_2[0][0]']
+
+batch_normalization_3 (BatchNo  (32, 20, 86, 128)   512         ['conv2d_4[0][0]']
+rmalization)
+
+activation_3 (Activation)      (32, 20, 86, 128)    0           ['batch_normalization_3[0][0]']
+
+conv2d_5 (Conv2D)              (32, 20, 86, 128)    147584      ['activation_3[0][0]']
+
+conv2d_6 (Conv2D)              (32, 20, 86, 128)    8320        ['activation_2[0][0]']
+
+batch_normalization_4 (BatchNo  (32, 20, 86, 128)   512         ['conv2d_5[0][0]']
+rmalization)
+
+add_1 (Add)                    (32, 20, 86, 128)    0           ['conv2d_6[0][0]',
+                                                                  'batch_normalization_4[0][0]']
+
+activation_4 (Activation)      (32, 20, 86, 128)    0           ['add_1[0][0]']
+
+conv2d_7 (Conv2D)              (32, 10, 43, 256)    295168      ['activation_4[0][0]']
+
+batch_normalization_5 (BatchNo  (32, 10, 43, 256)   1024        ['conv2d_7[0][0]']
+rmalization)
+
+activation_5 (Activation)      (32, 10, 43, 256)    0           ['batch_normalization_5[0][0]']
+
+conv2d_8 (Conv2D)              (32, 10, 43, 256)    590080      ['activation_5[0][0]']
+
+conv2d_9 (Conv2D)              (32, 10, 43, 256)    33024       ['activation_4[0][0]']
+
+batch_normalization_6 (BatchNo  (32, 10, 43, 256)   1024        ['conv2d_8[0][0]']
+rmalization)
+
+add_2 (Add)                    (32, 10, 43, 256)    0           ['conv2d_9[0][0]',
+                                                                  'batch_normalization_6[0][0]']
+
+activation_6 (Activation)      (32, 10, 43, 256)    0           ['add_2[0][0]']
+
+conv2d_10 (Conv2D)             (32, 5, 22, 512)     1180160     ['activation_6[0][0]']
+
+batch_normalization_7 (BatchNo  (32, 5, 22, 512)    2048        ['conv2d_10[0][0]']
+rmalization)
+
+activation_7 (Activation)      (32, 5, 22, 512)     0           ['batch_normalization_7[0][0]']
+
+conv2d_11 (Conv2D)             (32, 5, 22, 512)     2359808     ['activation_7[0][0]']
+
+conv2d_12 (Conv2D)             (32, 5, 22, 512)     131584      ['activation_6[0][0]']
+
+batch_normalization_8 (BatchNo  (32, 5, 22, 512)    2048        ['conv2d_11[0][0]']
+rmalization)
+
+add_3 (Add)                    (32, 5, 22, 512)     0           ['conv2d_12[0][0]',
+                                                                  'batch_normalization_8[0][0]']
+
+activation_8 (Activation)      (32, 5, 22, 512)     0           ['add_3[0][0]']
+
+time_distributed (TimeDistribu  (32, 5, 11264)      0           ['activation_8[0][0]']
+ted)
+
+dropout (Dropout)              (32, 5, 11264)       0           ['time_distributed[0][0]']
+
+lstm (LSTM)                    (32, 5, 256)         11797504    ['dropout[0][0]']
+
+dropout_1 (Dropout)            (32, 5, 256)         0           ['lstm[0][0]']
+
+lstm_1 (LSTM)                  (32, 5, 512)         1574912     ['dropout_1[0][0]']
+
+dropout_2 (Dropout)            (32, 5, 512)         0           ['lstm_1[0][0]']
+
+lstm_2 (LSTM)                  (32, 512)            2099200     ['dropout_2[0][0]']
+
+dropout_3 (Dropout)            (32, 512)            0           ['lstm_2[0][0]']
+
+dense (Dense)                  (32, 128)            65664       ['dropout_3[0][0]']
+
+dropout_4 (Dropout)            (32, 128)            0           ['dense[0][0]']
+
+dense_1 (Dense)                (32, 1)              129         ['dropout_4[0][0]']
+
+==================================================================================================
+```
+
+</details>
 
 ## Training Process 🏋️‍♂️
 
