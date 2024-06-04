@@ -450,7 +450,7 @@ The model is trained only on the voice of the author. It may not perform optimal
 
 ## 🔗 Dependencies
 
-The link to the **PreTrained Model** (on voice of the author): [PreTrained Model](https://drive.google.com/file/d/1Q_2NUY1HP67XyWa50pP_0NaSwIm4M2O9/view?usp=sharing)
+The link to the **PreTrained Model** (on voice of the author): [PreTrained Model](https://drive.google.com/file/d/1KZUPgDyXOAIEerHWMrxwh7Fb50Yxf0RT/view?usp=sharing)
 
 To run this project, you need to have the following dependencies installed:
 
